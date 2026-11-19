@@ -1,0 +1,54 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un compte - Le Grand Cinéma{% endblock %}
+
+{% block body %}
+    <main class="login-page">
+        <h1>Créer un compte</h1>
+        <p>Rejoignez Le Grand Cinéma pour réserver vos séances en ligne.</p>
+
+        {{ form_errors(registrationForm) }}
+
+        {{ form_start(registrationForm) }}
+            <div>
+                {{ form_label(registrationForm.email, 'Adresse e-mail') }}
+                {{ form_widget(registrationForm.email, {
+                    attr: {
+                        placeholder: 'exemple@email.com',
+                        autocomplete: 'email'
+                    }
+                }) }}
+                {{ form_errors(registrationForm.email) }}
+            </div>
+            <div>
+                {{ form_row(registrationForm.firstName, {
+                    label: 'Prénom'
+                }) }}
+            </div>
+
+            <div>
+                {{ form_row(registrationForm.lastName, {
+                    label: 'Nom'
+                }) }}
+            </div>
+            <div>
+                {{ form_label(registrationForm.plainPassword, 'Mot de passe') }}
+                {{ form_widget(registrationForm.plainPassword, {
+                    attr: {
+                        placeholder: '8 caractères minimum'
+                    }
+                }) }}
+                {{ form_errors(registrationForm.plainPassword) }}
+            </div>
+
+            <div>
+                {{ form_row(registrationForm.agreeTerms, {
+                    label: 'J’accepte les conditions d’utilisation.'
+                }) }}
+            </div>
+
+            <button type="submit">Créer mon compte</button>
+        {{ form_end(registrationForm) }}
+    </main>
+{% endblock %}

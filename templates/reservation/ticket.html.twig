@@ -1,0 +1,70 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon billet - Le Grand Cinéma{% endblock %}
+
+{% block body %}
+<main class="ticket-page">
+    <a href="{{ path('app_reservation') }}" class="back-link">
+        ← Retour à mes réservations
+    </a>
+
+    <article class="ticket">
+        <header class="ticket-header">
+            <span>LE GRAND CINÉMA</span>
+            <span class="ticket-status">RÉSERVATION CONFIRMÉE</span>
+        </header>
+
+        <div class="ticket-content">
+            <p class="ticket-label">VOTRE BILLET</p>
+
+            <h1>{{ reservation.session.film.title }}</h1>
+
+            <p class="ticket-number">
+                Billet n° GC-{{ '%05d'|format(reservation.id) }}
+            </p>
+
+            <div class="ticket-details">
+                <div>
+                    <span>Date</span>
+                    <strong>{{ reservation.session.startsAt|date('d/m/Y') }}</strong>
+                </div>
+
+                <div>
+                    <span>Heure</span>
+                    <strong>{{ reservation.session.startsAt|date('H:i') }}</strong>
+                </div>
+
+                <div>
+                    <span>Salle</span>
+                    <strong>{{ reservation.session.roomNumber }}</strong>
+                </div>
+
+                <div>
+                    <span>Places</span>
+                    <strong>
+                        {% for seat in reservation.seats %}
+                            {{ seat.rowLabel }}{{ seat.seatNumber }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </strong>
+                </div>
+            </div>
+
+            <div class="ticket-total">
+                <span>Montant total</span>
+                <strong>
+                    {{ (reservation.seats|length * reservation.session.price)|number_format(2, ',', ' ') }} €
+                </strong>
+            </div>
+        </div>
+
+        <footer class="ticket-footer">
+            Présentez ce billet à l'entrée de votre séance.
+        </footer>
+    </article>
+
+    <button type="button" onclick="window.print()" class="print-button">
+        Imprimer mon billet
+    </button>
+</main>
+{% endblock %}

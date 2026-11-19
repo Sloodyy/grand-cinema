@@ -1,0 +1,86 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes réservations - Le Grand Cinéma{% endblock %}
+
+{% block body %}
+<header>
+    <nav>
+        <a href="{{ path('app_home') }}">Le Grand Cinéma</a>
+
+        <div>
+            <a href="{{ path('app_home') }}">Accueil</a>
+            <a href="{{ path('app_film') }}">Films</a>
+            <a href="{{ path('app_reservation') }}">Mes réservations</a>
+            <span>Bonjour {{ app.user.firstName }}</span>
+            <a href="{{ path('app_logout') }}">Déconnexion</a>
+        </div>
+    </nav>
+</header>
+
+<main class="reservations-page">
+    <h1>Mes réservations</h1>
+    <p>Retrouvez ici l'ensemble de vos réservations.</p>
+
+    {% if reservations is not empty %}
+        <div class="reservations-list">
+            {% for reservation in reservations %}
+                <article class="reservation-card">
+                    <h2>{{ reservation.session.film.title }}</h2>
+
+                    <p>
+                        <strong>Séance :</strong>
+                        {{ reservation.session.startsAt|date('d/m/Y à H:i') }}
+                    </p>
+
+                    <p>
+                        <strong>Salle :</strong>
+                        {{ reservation.session.roomNumber }}
+                    </p>
+
+                    <p>
+                        <strong>Places :</strong>
+                        {% for seat in reservation.seats %}
+                            {{ seat.rowLabel }}{{ seat.seatNumber }}{% if not loop.last %}, {% endif %}
+                        {% else %}
+                            Aucune place associée.
+                        {% endfor %}
+                    </p>
+
+                    <p>
+                        <strong>Nombre de places :</strong>
+                        {{ reservation.seats|length }}
+                    </p>
+
+                    <p>
+                        <strong>Montant total :</strong>
+                        {{ (reservation.seats|length * reservation.session.price)|number_format(2, ',', ' ') }} €
+                    </p>
+
+                    <p>
+                        <strong>Statut :</strong>
+                        {% if reservation.status == 'confirmed' %}
+                            Confirmée
+                        {% elseif reservation.status == 'cancelled' %}
+                            Annulée
+                        {% else %}
+                            {{ reservation.status }}
+                        {% endif %}
+                    </p>
+
+                    <p>
+                        <strong>Réservation effectuée le :</strong>
+                        {{ reservation.createdAt|date('d/m/Y à H:i') }}
+                    </p>
+                    <a href="{{ path('app_reservation_ticket', {id: reservation.id}) }}">
+                        Voir mon billet
+                    </a>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Vous n'avez pas encore effectué de réservation.</p>
+        <a href="{{ path('app_film') }}">Découvrir les films</a>
+    {% endif %}
+</main>
+{% endblock %}

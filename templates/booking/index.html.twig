@@ -1,0 +1,118 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Réserver mes places - Le Grand Cinéma{% endblock %}
+
+{% block body %}
+<header>
+    <nav>
+        <a href="{{ path('app_home') }}">Le Grand Cinéma</a>
+
+        <div>
+            <a href="{{ path('app_home') }}">Accueil</a>
+            <a href="{{ path('app_film') }}">Films</a>
+
+            {% if app.user %}
+                <a href="{{ path('app_reservation') }}">Mes réservations</a>
+                <span>Bonjour {{ app.user.firstName }}</span>
+                <a href="{{ path('app_logout') }}">Déconnexion</a>
+            {% else %}
+                <a href="{{ path('app_login') }}">Connexion</a>
+                <a href="{{ path('app_register') }}">Créer un compte</a>
+            {% endif %}
+        </div>
+    </nav>
+</header>
+
+<main class="booking-page">
+    <h1>Réserver mes places</h1>
+
+    <section>
+        <h2>{{ session.film.title }}</h2>
+
+        <p>
+            Séance : {{ session.startsAt|date('d/m/Y à H:i') }}
+        </p>
+
+        <p>Salle : {{ session.roomNumber }}</p>
+        <p>Prix : {{ session.price }} € par place</p>
+    </section>
+
+    <section class="seat-selection">
+        <h2>Choisissez vos places</h2>
+
+        <div class="screen">
+            ÉCRAN
+        </div>
+
+        <div class="seat-legend">
+            <span><i class="legend-seat available"></i> Disponible</span>
+            <span><i class="legend-seat reserved"></i> Indisponible</span>
+            <span><i class="legend-seat selected"></i> Votre sélection</span>
+        </div>
+
+        {{ form_start(form) }}
+
+        {% set currentRow = '' %}
+
+        <div class="seat-plan">
+            {% for seat in seats %}
+                {% if currentRow != seat.rowLabel %}
+                    {% if not loop.first %}
+                        </div>
+                    {% endif %}
+
+                    {% set currentRow = seat.rowLabel %}
+
+                    <div class="seat-row">
+                        <span class="row-label">{{ seat.rowLabel }}</span>
+                {% endif %}
+
+                {% if seat.id in reservedSeatIds %}
+                    <span class="seat reserved">
+                        {{ seat.seatNumber }}
+                    </span>
+                {% else %}
+                    {% for seatField in form.seats %}
+                        {% if seatField.vars.value == seat.id %}
+                            <label class="seat available">
+                                {{ form_widget(seatField) }}
+                                {{ seat.seatNumber }}
+                            </label>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+
+        {% if seats is not empty %}
+            </div>
+        {% endif %}
+    </div>
+
+    <p>
+        Places déjà réservées :
+        {{ reservedSeatIds|length }} / {{ seats|length }}
+    </p>
+
+    <div class="booking-summary" data-price="{{ session.price }}">
+        <div>
+            <span>Places sélectionnées</span>
+            <strong id="selected-count">0</strong>
+        </div>
+
+        <div>
+            <span>Total à payer</span>
+            <strong id="selected-total">0,00 €</strong>
+        </div>
+    </div>
+
+    <button type="submit">Confirmer mes places</button>
+
+    {{ form_end(form) }}
+</section>
+
+    <a href="{{ path('app_film') }}">Retour aux films</a>
+</main>
+
+<script src="{{ asset('js/booking.js') }}" defer></script>
+{% endblock %}

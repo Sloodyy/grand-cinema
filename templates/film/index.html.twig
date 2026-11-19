@@ -11,11 +11,19 @@
         <div>
             <a href="{{ path('app_home') }}">Accueil</a>
             <a href="{{ path('app_film') }}">Films</a>
-            <a href="#">Mes réservations</a>
-            <a href="#">Connexion</a>
+
+            {% if app.user %}
+                <a href="#">Mes réservations</a>
+                <span>{{ app.user.firstName }}</span>
+                <a href="{{ path('app_logout') }}">Déconnexion</a>
+            {% else %}
+                <a href="{{ path('app_login') }}">Connexion</a>
+                <a href="{{ path('app_register') }}">Créer un compte</a>
+            {% endif %}
         </div>
     </nav>
 </header>
+
 
 <main class="films-page">
     <section class="films-intro">
@@ -52,11 +60,17 @@
 
                                 {% if film.sessions is not empty %}
                                     {% for session in film.sessions %}
-                                        <p>
-                                            {{ session.startsAt|date('d/m/Y à H:i') }}
-                                            — Salle {{ session.roomNumber }}
-                                            — {{ session.price }} €
-                                        </p>
+                                        <div class="session-item">
+                                            <p>
+                                                {{ session.startsAt|date('d/m/Y à H:i') }}
+                                                — Salle {{ session.roomNumber }}
+                                                — {{ session.price }} €
+                                            </p>
+
+                                            <a href="{{ path('app_booking', {id: session.id}) }}">
+                                                Choisir mes places
+                                            </a>
+                                        </div>
                                     {% endfor %}
                                 {% else %}
                                     <p>Aucune séance programmée pour ce film.</p>

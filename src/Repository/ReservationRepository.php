@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Reservation;
+use App\Entity\Session;
+use App\Entity\Seat;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,28 +18,25 @@ class ReservationRepository extends ServiceEntityRepository
         parent::__construct($registry, Reservation::class);
     }
 
-//    /**
-//     * @return Reservation[] Returns an array of Reservation objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('r.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    
+    /**
+     * Récupère les places déjà associées à une réservation pour une séance.
+     *
+     * @return Seat[]
+     */
+    public function findReservedSeatsForSession(Session $session): array
+    {
+        return $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('DISTINCT seat')
+            ->from(Seat::class, 'seat')
+            ->innerJoin('seat.reservations', 'reservation')
+            ->andWhere('reservation.session = :session')
+            ->andWhere('reservation.status != :cancelled')
+            ->setParameter('session', $session)
+            ->setParameter('cancelled', 'cancelled')
+            ->getQuery()
+            ->getResult();
+    }
 
-//    public function findOneBySomeField($value): ?Reservation
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }
