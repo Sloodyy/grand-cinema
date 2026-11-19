@@ -1,0 +1,58 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion - Le Grand Cinéma{% endblock %}
+
+{% block body %}
+    <main class="login-page">
+        <h1>Connexion</h1>
+
+        {% if error %}
+            <div class="alert alert-danger">
+                Identifiants incorrects. Veuillez réessayer.
+            </div>
+        {% endif %}
+
+        {% if app.user %}
+            <p>
+                Vous êtes connecté en tant que
+                {{ app.user.userIdentifier }}.
+                <a href="{{ logout_path() }}">Se déconnecter</a>
+            </p>
+        {% else %}
+            <form method="post">
+                <div>
+                    <label for="username">Adresse e-mail</label>
+                    <input
+                        type="email"
+                        value="{{ last_username }}"
+                        name="_username"
+                        id="username"
+                        autocomplete="email"
+                        required
+                        autofocus
+                    >
+                </div>
+
+                <div>
+                    <label for="password">Mot de passe</label>
+                    <input
+                        type="password"
+                        name="_password"
+                        id="password"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+
+                <input
+                    type="hidden"
+                    name="_csrf_token"
+                    value="{{ csrf_token('authenticate') }}"
+                >
+
+                <button type="submit">Se connecter</button>
+            </form>
+        {% endif %}
+    </main>
+{% endblock %}

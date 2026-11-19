@@ -9,27 +9,55 @@
         <a href="{{ path('app_home') }}">Le Grand Cinéma</a>
 
         <div>
-            <a href="#">Accueil</a>
-            <a href="#">Films</a>
-            <a href="#">Mes réservations</a>
-            <a href="#">Connexion</a>
+            <a href="{{ path('app_home') }}">Accueil</a>
+            <a href="{{ path('app_film') }}">Films</a>
+
+            {% if app.user %}
+                <span>Bonjour {{ app.user.firstName }}</span>
+                <a href="{{ path('app_logout') }}">Déconnexion</a>
+            {% else %}
+                <a href="{{ path('app_login') }}">Connexion</a>
+                <a href="{{ path('app_register') }}">Créer un compte</a>
+            {% endif %}
         </div>
     </nav>
 </header>
 
 <main>
-    <section>
+    <section class="home-hero">
         <h1>Bienvenue au Grand Cinéma</h1>
+
         <p>
             Découvrez notre programmation et réservez vos places
             en ligne pour profiter pleinement de vos séances.
         </p>
-        <a href="#">Découvrir les films</a>
+
+        <a href="{{ path('app_film') }}">Découvrir les films</a>
     </section>
 
-    <section>
+    <section class="home-films">
         <h2>À l'affiche</h2>
-        <p>Retrouvez prochainement notre sélection de films et de séances.</p>
+
+        <p>
+            Découvrez tous les films actuellement proposés
+            par notre cinéma et consultez leurs prochaines séances.
+        </p>
+
+        <a href="{{ path('app_film') }}">Consulter la programmation</a>
     </section>
+
+    {% if not app.user %}
+        <section class="home-account">
+            <h2>Rejoignez Le Grand Cinéma</h2>
+
+            <p>
+                Créez votre compte pour préparer vos prochaines
+                séances et réserver vos places en ligne.
+            </p>
+
+            <a href="{{ path('app_register') }}">Créer mon compte</a>
+            <a href="{{ path('app_login') }}">J'ai déjà un compte</a>
+        </section>
+    {% endif %}
 </main>
 {% endblock %}
