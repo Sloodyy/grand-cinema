@@ -1,0 +1,145 @@
+/* Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f7f5f0;
+    color: #292521;
+}
+
+/* Navigation */
+header {
+    background: #fff;
+    border-bottom: 1px solid #e7e1d8;
+    padding: 25px 8%;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav > a {
+    color: #762f36;
+    font-family: Georgia, serif;
+    font-size: 27px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+nav div {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+}
+
+nav div a {
+    color: #514b45;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+nav div a:hover {
+    color: #762f36;
+}
+
+/* Contenu principal */
+main {
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 65px 35px;
+}
+
+/* Bannière d'accueil */
+main section:first-child {
+    background: #762f36;
+    color: #fff;
+    padding: 100px 75px;
+    border-radius: 3px;
+    text-align: left;
+}
+
+main h1 {
+    max-width: 650px;
+    font-family: Georgia, serif;
+    font-size: 52px;
+    font-weight: normal;
+    line-height: 1.2;
+    margin-bottom: 25px;
+}
+
+main section:first-child p {
+    max-width: 540px;
+    color: #eee1df;
+    font-size: 16px;
+    line-height: 1.8;
+    margin-bottom: 35px;
+}
+
+main section:first-child a {
+    display: inline-block;
+    background: #f7f5f0;
+    color: #762f36;
+    padding: 15px 25px;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+main section:first-child a:hover {
+    background: #e9e2d8;
+}
+
+/* Section films */
+main section:last-child {
+    margin-top: 75px;
+    padding-bottom: 50px;
+}
+
+main h2 {
+    font-family: Georgia, serif;
+    font-size: 34px;
+    font-weight: normal;
+    margin-bottom: 20px;
+}
+
+main section:last-child p {
+    color: #777068;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+/* Adaptation mobile */
+@media (max-width: 700px) {
+    header {
+        padding: 20px;
+    }
+
+    nav {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    nav div {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    main {
+        padding: 35px 20px;
+    }
+
+    main section:first-child {
+        padding: 55px 25px;
+    }
+
+    main h1 {
+        font-size: 36px;
+    }
+}

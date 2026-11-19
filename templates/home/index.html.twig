@@ -1,0 +1,35 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Le Grand Cinéma - Accueil{% endblock %}
+
+{% block body %}
+<header>
+    <nav>
+        <a href="{{ path('app_home') }}">Le Grand Cinéma</a>
+
+        <div>
+            <a href="#">Accueil</a>
+            <a href="#">Films</a>
+            <a href="#">Mes réservations</a>
+            <a href="#">Connexion</a>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <section>
+        <h1>Bienvenue au Grand Cinéma</h1>
+        <p>
+            Découvrez notre programmation et réservez vos places
+            en ligne pour profiter pleinement de vos séances.
+        </p>
+        <a href="#">Découvrir les films</a>
+    </section>
+
+    <section>
+        <h2>À l'affiche</h2>
+        <p>Retrouvez prochainement notre sélection de films et de séances.</p>
+    </section>
+</main>
+{% endblock %}
