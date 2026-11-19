@@ -1,0 +1,77 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Films à l'affiche - Le Grand Cinéma{% endblock %}
+
+{% block body %}
+<header>
+    <nav>
+        <a href="{{ path('app_home') }}">Le Grand Cinéma</a>
+
+        <div>
+            <a href="{{ path('app_home') }}">Accueil</a>
+            <a href="{{ path('app_film') }}">Films</a>
+            <a href="#">Mes réservations</a>
+            <a href="#">Connexion</a>
+        </div>
+    </nav>
+</header>
+
+<main class="films-page">
+    <section class="films-intro">
+        <h1>Notre programmation</h1>
+        <p>Découvrez les films actuellement proposés par Le Grand Cinéma.</p>
+    </section>
+
+    <section class="films-catalogue">
+        <h2>Les films</h2>
+
+        {% if films is not empty %}
+            <div class="films-list">
+                {% for film in films %}
+                    <article class="film-card">
+                        <div class="film-card-content">
+                            <h3>{{ film.title }}</h3>
+
+                            {% if film.synopsis %}
+                                <p>{{ film.synopsis }}</p>
+                            {% else %}
+                                <p>Synopsis prochainement disponible.</p>
+                            {% endif %}
+
+                            <div class="film-infos">
+                                <span>{{ film.duration }} minutes</span>
+
+                                {% if film.releaseDate %}
+                                    <span>Sortie : {{ film.releaseDate|date('d/m/Y') }}</span>
+                                {% endif %}
+                            </div>
+
+                            <div class="film-sessions">
+                                <h4>Séances disponibles</h4>
+
+                                {% if film.sessions is not empty %}
+                                    {% for session in film.sessions %}
+                                        <p>
+                                            {{ session.startsAt|date('d/m/Y à H:i') }}
+                                            — Salle {{ session.roomNumber }}
+                                            — {{ session.price }} €
+                                        </p>
+                                    {% endfor %}
+                                {% else %}
+                                    <p>Aucune séance programmée pour ce film.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="empty-message">
+                Aucun film n'est actuellement disponible.
+                Revenez prochainement découvrir notre programmation.
+            </p>
+        {% endif %}
+    </section>
+</main>
+{% endblock %}
